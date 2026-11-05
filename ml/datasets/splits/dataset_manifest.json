@@ -1,0 +1,16 @@
+{
+  "dataset_version": "2.0.0-synthetic",
+  "prepared_at": "2026-11-05T03:34:31.833671+00:00",
+  "source_file": "synthetic_agents.jsonl",
+  "raw_examples": 13,
+  "cleaned_examples": 12,
+  "duplicates_removed": 1,
+  "low_quality_removed": 0,
+  "pii_redactions_applied": 4,
+  "data_leakage_detected": 0,
+  "splits": {
+    "train": 8,
+    "val": 2,
+    "test": 2
+  }
+}

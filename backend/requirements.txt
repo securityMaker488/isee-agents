@@ -1,0 +1,22 @@
+# ==============================================================================
+# I.SEE AGENTS — MAIN RUNTIME DEPENDENCIES (Backend API & Orchestration)
+# Note: Heavy ML training frameworks (PEFT, TRL, bitsandbytes) are intentionally
+# isolated in ../ml/requirements-ml.txt to keep the production runtime lean.
+# ==============================================================================
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.7.0
+pydantic-settings>=2.3.0
+SQLAlchemy>=2.0.30
+alembic>=1.13.1
+psycopg[binary]>=3.1.18
+pgvector>=0.3.2
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+bcrypt>=4.0.1
+python-multipart>=0.0.9
+httpx>=0.27.0
+numpy>=1.26.0
+Pillow>=10.3.0
+PyYAML>=6.0.1
+python-dotenv>=1.0.1

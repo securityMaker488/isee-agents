@@ -1,0 +1,48 @@
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local Databases & Runtime Artifacts (never commit runtime DBs or weights)
+*.db
+*.sqlite
+*.sqlite3
+backend/storage/
+ml/outputs/
+ml/checkpoints/
+*.safetensors
+*.bin
+*.gguf
+*.pt
+*.pth
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Node / Frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

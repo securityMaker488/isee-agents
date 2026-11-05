@@ -1,0 +1,60 @@
+version: "3.9"
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: isee-agents-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-isee_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-isee_secure_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-isee_agents}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/db_init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-isee_admin} -d ${POSTGRES_DB:-isee_agents}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: isee-agents-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      APP_ENV: production
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-isee_admin}:${POSTGRES_PASSWORD:-isee_secure_pass}@db:5432/${POSTGRES_DB:-isee_agents}
+      SECRET_KEY: ${SECRET_KEY:-CHANGE_ME_IN_PRODUCTION_USE_OPENSSL_RAND_HEX_32}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      OLLAMA_DEFAULT_MODEL: ${OLLAMA_DEFAULT_MODEL:-llama3.2:3b}
+      OLLAMA_EMBEDDING_MODEL: ${OLLAMA_EMBEDDING_MODEL:-nomic-embed-text}
+      ALLOW_DEMO_FALLBACK: ${ALLOW_DEMO_FALLBACK:-true}
+    ports:
+      - "8000:8000"
+    volumes:
+      - backend_uploads:/app/storage/uploads
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: isee-agents-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+
+volumes:
+  pgdata:
+  backend_uploads:
